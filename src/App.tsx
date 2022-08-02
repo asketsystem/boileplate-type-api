@@ -1,17 +1,18 @@
 import './App.css';
 import Header from './components/Header';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ListNotes from './components/ListNotes';
 import { Note } from './models/note.model'
 
 function App() {
-  const [notes, setNotes] = useState<Note[]>([
-    {
-      id: "1",
-      title: 'New Note',
-      body: 'This is a new note.'
-    }
-  ])
+  const [notes, setNotes] = useState<Note[]>([])
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then(response => response.json())
+      .then(data => setNotes(data))
+      .catch(err => console.error(err));
+  }, [])
   return (
     <>
       <Header />
